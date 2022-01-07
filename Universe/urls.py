@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
@@ -23,15 +24,15 @@ from .yasg import urlpatterns as doc_urls
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api-user/', include('user.urls')),
-    path('api-post/', include('post.urls')),
-    path('api-comment/', include('comment.urls')),
-    path('ws-chat/', include('chat.urls')),
+    url(r'^admin/', include('django.contrib.admin')),
+    path('api-user/', include('universeSocial.user.urls')),
+    path('api-post/', include('universeSocial.post.urls')),
+    path('api-comment/', include('universeSocial.comment.urls')),
+    path('ws-chat/', include('universeSocial.chat.urls')),
 
 
 ]
 
 urlpatterns += doc_urls
-urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+#urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
