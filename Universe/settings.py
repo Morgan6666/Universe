@@ -177,7 +177,7 @@ ASGI_APPLICATION = 'Universe.asgi.application'
 
 
 # Database
-DATABASE_URL = 'db.DATABASE_URL'
+DATABASE_URL = 'mysql.DATABASE_URL'
 
 if DEVELOPMENT_MODE is True:
     DATABASES = {
