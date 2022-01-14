@@ -17,10 +17,19 @@ from django.contrib import admin
 from django.urls import path, include
 
 
+from .yasg import urlpatterns as doc_urls
+
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('user/', include('user.urls')),
-    path('post/', include('post.urls')),
-    path('comment/', include('comment.urls')),
+    path('api-user/', include('user.urls')),
+    path('api-post/', include('post.urls')),
+    path('api-comment/', include('comment.urls')),
+    path('ws-chat/', include('chat.urls')),
+
 
 ]
+
+urlpatterns += doc_urls
+

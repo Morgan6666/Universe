@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+
 
 # Views and Responses
 from rest_framework import status
@@ -17,7 +18,7 @@ from django.core.mail import EmailMessage
 from django.contrib.auth import get_user_model, authenticate, login, logout
 
 # Local Imports
-from post.serializers import PostSerializer
+from post.serializers import PostSerializerPost
 from user.serializers import (CreateUserSerializer,
                               PublicUserSerializer,
                               PrivateUserSerializer,
@@ -25,8 +26,10 @@ from user.serializers import (CreateUserSerializer,
                               UploadUserPicSerializer)
 from user.tests import message
 from user.tokens import email_auth_otp
+import logging
 
 
+logger = logging.getLogger(__name__)
 class LoginUserAPI(APIView):
     def post(self, request, *args, **kwargs):
         username = request.data.get('username')
@@ -69,10 +72,10 @@ class CreateUserAPI(APIView):
             user.reg_token = code
             user.save()
             message(user.username + ' created an account.')
-            email_subject = '{} is your Instagram Code'.format(code)
+            email_subject = '{}'.format(code)
             mail = render_to_string('activate_mail.html', {'email': user.email, 'code': code})
             to_email = user.email
-            email = EmailMessage(email_subject, mail, from_email='Instagram', to=[to_email])
+            email = EmailMessage(email_subject, mail, from_email='Universe', to=[to_email])
             email.content_subtype = 'html'
             email.send()
             message('Email send to ' + user.username)
@@ -117,12 +120,12 @@ class FollowUserAPI(APIView):
             req_user = get_user_model().objects.get(pk=kwargs['req_user_pk'])
         except get_user_model().DoesNotExist:
             req_user = None
-            message('User not found.')
+            message('User not found')
         try:
             ig_user = get_user_model().objects.get(pk=kwargs['ig_user_pk'])
         except get_user_model().DoesNotExist:
             ig_user = None
-            message('User not found')
+            message('User not found ')
         if req_user is not None and ig_user is not None:
             if req_user in ig_user.followers.all():
                 ig_user.followers.remove(req_user)
@@ -181,7 +184,7 @@ class FeedAPI(APIView):
             for following in user.following.all():
                 data = data | following.posts()
             data = data.order_by('-posted_time')
-            serializer = PostSerializer(data, many=True)
+            serializer = PostSerializerPost(data, many=True)
             return Response(status=status.HTTP_200_OK, data=serializer.data)
         return Response(status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION,
                         data={"error": "Invalid credentials"})

@@ -1,9 +1,8 @@
 from django.db import models
-
+from mixer.backend.django import mixer
 # Create your models here.
 from django.db import models
 from django.conf import settings
-
 from comment.models import Comment
 
 class Post(models.Model):
@@ -43,3 +42,6 @@ class Post(models.Model):
         if self.likes.count():
             return self.likes.count()
         return 0
+
+
+

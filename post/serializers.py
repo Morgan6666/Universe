@@ -12,10 +12,11 @@ class PostAuthorSerializer(serializers.ModelSerializer):
         model = get_user_model()
         fields = ['pk', 'username', 'full_name', 'profile_pic']
 
-class PostSerializer(serializers.ModelSerializer):
+class PostSerializerPost(serializers.ModelSerializer):
     author = PostAuthorSerializer()
     likes = PostAuthorSerializer(many=True)
     tags = PostAuthorSerializer(many=True)
+
     class Meta:
         model = Post
         fields = ['pk', 'author', 'image', 'caption', 'location',

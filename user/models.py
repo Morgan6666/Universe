@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 
 # Create your models here.
@@ -6,6 +8,17 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 
 from django.conf import settings
 from post.models import Post
+from mixer.backend.django import mixer
+from django.contrib.auth.models import User
+import os
+
+
+
+def image_file_path(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = f'{uuid.uid4()}.{ext}'
+
+    return os.path.join('uploads/', filename)
 
 class UserManager(BaseUserManager):
     ''' User Manager '''
@@ -77,6 +90,18 @@ class User(AbstractUser):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     reg_token = models.IntegerField('Registration Token', blank=True, null=True)
+    city = models.CharField(max_length=255, blank = True, null = True)
+    media_count = models.PositiveIntegerField(blank = True, default = 0)
+    follows_count = models.PositiveIntegerField(blank = True, default=0)
+    subscriber_count = models.PositiveIntegerField(blank = True, default = 0)
+    engagement_rate = models.DecimalField(default = 0, max_digits = 14, decimal_places=7)
+    approval_rate = models.DecimalField(default = 0, max_digits = 14, decimal_places=7)
+    discussion_rate = models.DecimalField(default = 0, max_digits = 5, decimal_places= 3)
+    male_percentage = models.DecimalField(default = 0, max_digits = 5, decimal_places=3)
+    female_percentage = models.DecimalField(default = 0, max_digits = 5, decimal_places=3)
+
+
+
 
     objects = UserManager()
     USERNAME_FIELD = 'username'
@@ -114,3 +139,6 @@ class User(AbstractUser):
     def saved_posts(self):
         ''' Get all saved posts '''
         return Post.objects.filter(saves__id=self.pk)
+
+
+#user = mixer.cycle(100).blend(User)

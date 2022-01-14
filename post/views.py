@@ -17,7 +17,7 @@ from rest_framework.generics import (# CreateAPIView,
 from django.contrib.auth import get_user_model
 
 # Local Imports
-from post.serializers import PostSerializer
+from post.serializers import PostSerializerPost
 from post.models import Post
 from user.tests import message
 
@@ -61,17 +61,17 @@ class CreatePostAPI(APIView):
 
 
 class GetPostAPI(RetrieveAPIView):
-    serializer_class = PostSerializer
+    serializer_class = PostSerializerPost
     queryset = Post.objects.all()
 
 
 class UpdatePostAPI(UpdateAPIView):
-    serializer_class = PostSerializer
+    serializer_class = PostSerializerPost
     queryset = Post.objects.all()
 
 
 class DeletePostAPI(DestroyAPIView):
-    serializer_class = PostSerializer
+    serializer_class = PostSerializerPost
     queryset = Post.objects.all()
 
 
@@ -117,3 +117,6 @@ class SavePostAPI(APIView):
             return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION,
                         data={"error": "Invalid pk values"})
+
+
+
