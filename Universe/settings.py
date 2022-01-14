@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 import sys
 import dj_database_url
-
 from pathlib import Path
 from django.core.management.utils import get_random_secret_key
 
@@ -34,21 +33,24 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', get_random_secret_key())
 DEVELOPMENT_MODE = os.getenv('DEVELOPMENT_MODE', 'False') == 'True'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG =  os.getenv('DEBUG', 'FALSE') == 'True'
+DEBUG = False# \
+    #os.getenv('DEBUG', 'FALSE') == 'True'
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = ('http://localhost:3000', )
 
+#Email settings
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'Denis'
 EMAIL_HOST_PASSWORD = '123456'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail/backends.console.EmailBackend'
+
 # Application definition
 
 #Mesasges
-
 MESSAGES_TO_LOAD = 15
 
 INSTALLED_APPS = [
@@ -167,7 +169,6 @@ TEMPLATES = [
 
 MAX_FILE_UPLOAD_SIZE = 429916160
 
-EMAIL_BACKEND = 'django.core.mail/backends.console.EmailBackend'
 
 
 WSGI_APPLICATION = 'Universe.wsgi.application'
@@ -177,7 +178,7 @@ ASGI_APPLICATION = 'Universe.asgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
+DATABASE_URL = 'db.DATABASE_URL'
 if DEVELOPMENT_MODE is True:
     DATABASES = {
         'default': {
@@ -185,12 +186,12 @@ if DEVELOPMENT_MODE is True:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
-    if os.getenv('DATABESE_URL', None) is None:
-        raise Exception('DATABASE_URL envirmonet variable not defined')
-    DATABASES = {
-        'DEFAULT': dj_database_url.parse(os.environ.get('DATABASE_URL')),
-    }
+#e#lif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+    #if os.getenv('DATABESE_URL', None) is None:
+    #    raise Exception('DATABASE_URL envirmonet variable not defined')
+   # DATABASES = {
+  #      'DEFAULT': dj_database_url.parse(os.environ.get('DATABASE_URL')),
+ #   }
 
 
 # Password validation
@@ -246,12 +247,12 @@ DIALOGS_PAGINATION = 250
 
 
 #Redis and Celary
-REDIS_HOST = '127.0.0.1'
-REDIS_PORT = 6379
-CELERY_BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
-CELERY_FROM_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
-CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
+#REDIS_HOST = '127.0.0.1'
+#REDIS_PORT = 6379
+#CELERY_BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+#CELERY_FROM_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
+#CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+#CELERY_ACCEPT_CONTENT = ['application/json']
+#CELERY_TASK_SERIALIZER = 'json'
+#CELERY_RESULT_SERIALIZER = 'json'
 
