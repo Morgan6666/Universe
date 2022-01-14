@@ -179,6 +179,7 @@ ASGI_APPLICATION = 'Universe.asgi.application'
 
 # Database
 DATABASE_URL = 'db.DATABASE_URL'
+
 if DEVELOPMENT_MODE is True:
     DATABASES = {
         'default': {
@@ -186,12 +187,12 @@ if DEVELOPMENT_MODE is True:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-#e#lif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
-    #if os.getenv('DATABESE_URL', None) is None:
-    #    raise Exception('DATABASE_URL envirmonet variable not defined')
-   # DATABASES = {
-  #      'DEFAULT': dj_database_url.parse(os.environ.get('DATABASE_URL')),
- #   }
+elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+    if os.getenv('DATABESE_URL', None) is None:
+        raise Exception('DATABASE_URL envirmonet variable not defined')
+    DATABASES = {
+        'DEFAULT': dj_database_url.parse(os.environ.get('DATABASE_URL')),
+    }
 
 
 # Password validation
