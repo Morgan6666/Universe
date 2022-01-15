@@ -11,8 +11,8 @@ class SerializerTest(TestCase):
         self.recipient = UserFactory.create()
         self.message = MessageModel.objects.create(sender = self.sender, recipient=self.recipient,
                                                    text = 'testText', read = True)
-        self.dialog = DialogsModel.objects.filter(user1 = self.sender, user2 = self.recipient).firts()
-        self.file = UploadedFile.objects.create(uploaded_by = self.sender, file = 'LICENSE')
+        self.dialog = DialogsModel.objects.filter(user1 = self.sender, user2 = self.recipient).first()
+        self.file = UploadedFile.objects.create(uploaded_by = self.sender, file ='LICENSE.txt')
 
 
 
@@ -73,6 +73,7 @@ class SerializerTest(TestCase):
             'username': self.recipient.username,
             'last_message': serialize_message_model(self.message, self.sender.pk)
         }
+        self.assertEqual(serialized, o)
 
     def tearDown(self):
         pass

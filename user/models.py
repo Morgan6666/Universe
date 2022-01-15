@@ -57,7 +57,7 @@ class User(AbstractUser):
     full_name = models.CharField('Full Name', max_length=30)
     lastname = models.CharField('Last name', max_length = 30)
     username = models.CharField('Username', max_length=30, unique=True)
-    email = models.EmailField('Email', max_length=50, unique=True)
+    #email = models.EmailField('Email', max_length=50, unique=True)
     ph_number = models.IntegerField('Phone Number', blank=True, null=True, unique=True)
     bio = models.TextField('Bio', blank=True)
     birthday = models.DateField('Birthday', blank=True, null=True)

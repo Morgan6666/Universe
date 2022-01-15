@@ -32,7 +32,7 @@ class UserFactory(DjangoModelFactory):
     username = Sequence(lambda n: 'user_%03d' % n)
     first_name = LazyAttribute(lambda x: faker.text(max_nb_chars = 150))
     last_name = LazyAttribute(lambda x: faker.text(max_nb_chars = 150))
-    email = faker.email()
+    #email = faker.email()
     is_staff = Iterator([True, False])
     is_active = Iterator([True, False])
     date_joined = LazyAttribute(lambda x: faker.date_time_between(start_date = '-1y', end_date = 'now',
@@ -52,5 +52,5 @@ class MessageModelFactory(DjangoModelFactory):
     sender = Iterator(User.objects.all())
     recipient = Iterator(User.objects.all())
     text = LazyAttribute(lambda x: faker.paragraph(nb_sentences = 3, variable_nb_sentences = True))
-    file = LazyAttribute(lambda x: False)
+    file = LazyAttribute(lambda x: None)
     read = Iterator([True, False])

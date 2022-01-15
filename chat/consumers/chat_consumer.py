@@ -9,7 +9,7 @@ from .db_operations import get_groups_to_add, get_unread_count, get_user_by_pk, 
     get_file_by_id, get_message_by_id, save_file_message, save_text_message, mark_message_as_read
 
 from .message_types import MessageTypes, MessageTypeMessageRead, MessageTypeFileMessage, \
-    MessageTypeTextMessage, OutgoingEventNewTextMessag, OutgoingEventIsTyping, OutgoingEventMessageIdCreated, \
+    MessageTypeTextMessage, OutgoingEventNewTextMessage, OutgoingEventIsTyping, OutgoingEventMessageIdCreated, \
     OutgoingWentOffline, OutgoingEventWentOnline, OutgoingEventMessageRead, OutgoingEventNewFileMessage, \
     OutgoingEventStoppedTyping, OutgoingEventNewUnreadCount
 
@@ -25,7 +25,7 @@ UNAUTH_REJECT_CODE: int = 4001
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
-    async def _aftr_message_save(self, msg: MessageModel, rid: int, user_pk: str):
+    async def _after_message_save(self, msg: MessageModel, rid: int, user_pk: str):
         ev = OutgoingEventMessageIdCreated(random_id=rid, db_id=msg.id)._asdict()
         logger.info(f'Message with id  {msg.id} saved, firing events to {user_pk} & {self.group_name}')
         await self.channel_layer.group_send(user_pk, ev)
@@ -36,10 +36,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
         if self.scope['user'].is_authenticated:
-            self.userr: AbstractBaseUser = self.scope['user']
+            self.user: AbstractBaseUser = self.scope['user']
             self.group_name: str = str(self.user.pk)
             self.sender_username: str = self.user.get_username()
-            logger.info(f'Usre {self.user.pk} connecting, adding {self.channel_name} to {self.group_name}')
+
+           # logger.info(f'User {self.user.pk} connecting, adding {self.channel_name} to {self.group_name}')
             await self.channel_layer.group_add(self.group_name, self.channel_name)
             await self.accept()
             dialogs = await get_groups_to_add(self.user)
@@ -193,7 +194,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'error': error
             }
             logger.info(f'Will send error {error_data} to {self.group_name}')
-            await  self.send(text_data=json.dumps(error_data))
+            await self.send(text_data=json.dumps(error_data))
 
     async def new_unread_count(self, event: dict):
         await self.send(text_data=OutgoingEventNewUnreadCount(**event).to_json())
@@ -205,7 +206,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=OutgoingEventMessageIdCreated(**event).to_json())
 
     async def new_text_message(self, event: dict):
-        await self.send(text_data=OutgoingEventNewTextMessag(**event).to_json())
+        await self.send(text_data=OutgoingEventNewTextMessage(**event).to_json())
 
     async def new_file_message(self, event: dict):
         await self.send(text_data=OutgoingEventNewFileMessage(**event).to_json())

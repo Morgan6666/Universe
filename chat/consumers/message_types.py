@@ -50,7 +50,7 @@ class OutgoingEventMessageRead(NamedTuple):
         })
 
 
-class OutgoingEventNewTextMessag(NamedTuple):
+class OutgoingEventNewTextMessage(NamedTuple):
     random_id: int
     text: str
     sender: str

@@ -1,7 +1,8 @@
 from django.urls import path, re_path
 from chat import consumers
 from chat import views
-
+from django.conf.urls.static import static
+from Universe import settings
 app_name = 'Chat'
 websocket_urlpatterns = [
     re_path(r'^chat_ws$', consumers.ChatConsumer.as_asgi()),
