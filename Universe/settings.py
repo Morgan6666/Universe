@@ -36,8 +36,8 @@ DEVELOPMENT_MODE = os.getenv('DEVELOPMENT_MODE', 'False') == 'True'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG =os.getenv('DEBUG', 'FALSE') == 'True'
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
-
+#ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+ALLOWED_HOSTS = ['134.122.51.58', '127.0.0.1', 'localhost']
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = ('http://localhost:3000', )
 
@@ -181,19 +181,29 @@ ASGI_APPLICATION = 'Universe.asgi.application'
 # Database
 #DATABASE_URL = 'mysql.DATABASE_URL'
 
-if DEVELOPMENT_MODE is True:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
+#if DEVELOPMENT_MODE is True:
+ #   DATABASES = {
+  #      'default': {
+   ##        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+     #   }
+    #}
+#elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+ #   if os.getenv('DATABASE_URL', None) is None:
+  #      raise Exception('DATABASE_URL environment variable not defined')
+   # DATABASES = {
+    #    'DEFAULT': dj_database_url.parse(os.environ.get('DATABASE_URL')),
+    #}
+
+DATABASES = {
+    'default':{
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'universe',
+        'USER': 'Morgan',
+        'PASSWORD': 'minecraft2408',
+        'HOST': 'localhost',
+        'PORT':'',
     }
-elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
-    if os.getenv('DATABASE_URL', None) is None:
-        raise Exception('DATABASE_URL environment variable not defined')
-    DATABASES = {
-        'DEFAULT': dj_database_url.parse(os.environ.get('DATABASE_URL')),
-    }
+}
 
 
 # Password validation
@@ -231,8 +241,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+#STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
